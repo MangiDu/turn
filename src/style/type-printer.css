@@ -1,0 +1,49 @@
+$key: #999;
+$keyLetter: #333;
+$keyBorder: #efefef;
+
+
+.TypePrinter {
+  &-body {
+    display: inline-block;
+    height: 100px;
+    width: 220px;
+    background-color: #ddd;
+  }
+  &-keyboard {
+    text-align: center;
+  }
+  &-key {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    margin: 0 1px;
+    border: 1px solid $keyBorder;
+    text-align: center;
+    line-height: 16px;
+    font-size: 12px;
+    background-color: $key;
+    border-radius: 50%;
+    box-shadow: inset 0 0 5px rgba(0,0,0,.2),
+                inset 0 0 3px rgba(0,0,0,.2);
+    &[data-keyname="space"] {
+      width: 80px;
+      height: 12px;
+      border-radius: 6px;
+      &::after {
+        display: none;
+      }
+    }
+    &.is-active {
+      border-color: color($keyBorder shade(20%));
+      background-color: color($key shade(20%));
+      &::after {
+        color: color($keyLetter shade(20%));
+      }
+    }
+    &::after {
+      content: attr(data-keyname);
+      color: $keyLetter;
+    }
+  }
+}
