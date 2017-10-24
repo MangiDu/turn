@@ -19,17 +19,24 @@ export default class TypePrinter {
     `
     document.body.appendChild(el)
 
+
+    let funcMap = {
+      keydown: 'add',
+      keyup: 'remove'
+    }
     this._keyHandler = (e) => {
       let key = e.key === ' ' ? 'space' : e.key
       let keyEl = el.querySelector(`[data-keyname="${key}"]`)
-      keyEl ? keyEl.classList.toggle('is-active') : null
+      keyEl ? keyEl.classList[funcMap[e.type]]('is-active') : null
     }
     window.addEventListener('keyup', this._keyHandler)
     window.addEventListener('keydown', this._keyHandler)
 
     this.el = el
 
-    this.loading()
+    // this.loadingOnce()
+    let stop = this.loadLoop()
+    window.stop = stop
   }
   _getKeys () {
     return letters.reduce(function (data = '', letter) {
@@ -45,7 +52,23 @@ export default class TypePrinter {
       return data
     })
   }
-  loading () {
+  loadLoop () {
+    let p = this.loadingOnce()
+    let flag = true
+    let loop = () => {
+      if (flag) {
+        return this.loadingOnce(loop)
+      }
+      return Promise.reject()
+    }
+    p.then(loop).catch((e) => {
+      console.log(e)
+    })
+    return () => {
+      flag = false
+    }
+  }
+  loadingOnce (func = () => {}) {
     let p = Promise.resolve()
     loading.forEach((letter) => {
       p = p.then(() => {
@@ -57,13 +80,11 @@ export default class TypePrinter {
             let e = new Event('keyup')
             e.key = letter
             window.dispatchEvent(e)
-            setTimeout(resolve, 100)
-          }, 300)
+            setTimeout(resolve, 200)
+          }, 200)
         })
       })
     })
-    return p.then(() => {
-      console.log('one turn loading finished')
-    })
+    return p.then(func)
   }
 }
