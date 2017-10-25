@@ -1,3 +1,7 @@
 body {
-  background: #eee;
+  background: #efefef;
+}
+
+#loading {
+  text-align: center;
 }

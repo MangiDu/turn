@@ -25,7 +25,7 @@ class Model {
       url: 'https://api.github.com/graphql',
       method: 'post',
       headers: {
-        Authorization: 'bearer 247e16c4285a56e08a33b4bb37ee90684cd248ea'
+        Authorization: 'bearer 75bc33e2e5428ef0062474aaff1d759171d08286'
       },
       data: {
         query: this.query
@@ -35,6 +35,7 @@ class Model {
       if (this.useCache) {
         ls.setItem(key, JSON.stringify(this.data))
       }
+      return Promise.resolve(this.data)
     }, (err) => {
       console.log(err)
     })

@@ -9,8 +9,11 @@ class View {
     this.tplStr = option.tplStr
 
     this.model = option.model
-    this.model.requestData().then(() => {
-      if (this.el) this.render()
+    this.model.requestData().then((data) => {
+      if (data) {
+        console.log(this.model.getData())
+        if (this.el) this.render()
+      }
     })
   }
   _getEl (el = '') {
@@ -26,7 +29,9 @@ class View {
     return compiled(data)
   }
   render () {
-    this.el.innerHTML = this.template(this.model.getData())
+    let tpl = this.template(this.model.getData())
+    console.log(tpl)
+    this.el.innerHTML = tpl
   }
   destroy () {
     this.el.innerHTML = ''

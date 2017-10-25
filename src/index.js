@@ -7,7 +7,7 @@ import Model from './model'
 import config from './config'
 
 let user = new Model({
-  useCache: true,
+  // useCache: true,
   query: `
   {
     user(login: "${config.user}") {
@@ -31,7 +31,13 @@ let router = new Router({
       el: '#app',
       model: user,
       tplStr: `
-        <div>HELLO <%= user.name %></div>
+        <div class="header">
+          <div class="avatar">
+            <img src="<%= user.avatarUrl %>">
+          </div>
+          <div class="name"><%= user.name %></div>
+          <div class="bio"><%= user.bio %></div>
+        </div>
       `
     })
   },
@@ -41,3 +47,9 @@ let router = new Router({
 })
 
 router.route('/')
+
+import TypePrinter from './typeprinter'
+
+let tp = new TypePrinter()
+
+document.querySelector('#loading').appendChild(tp.el)
