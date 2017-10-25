@@ -5,20 +5,27 @@ const letters = ['q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p', null, 'a', 's
 const loading = 'loading...'.split('')
 
 export default class TypePrinter {
-  constructor () {
+  constructor (el) {
     this.init()
   }
   init () {
     let el = document.createElement('div')
     el.classList.add('TypePrinter')
     el.innerHTML = `
+      <div class="TypePrinter-paperSlot">
+        <div class="TypePrinter-paper">
+          <p class="js-content">loading...</p>
+        </div>
+        <div class="TypePrinter-handler"></div>
+      </div>
       <div class="TypePrinter-body">
+        <div class="TypePrinter-rod"></div>
         <div class="TypePrinter-keyboard">
           <div class="js-keys">${this._getKeys()}</div>
         </div>
       </div>
     `
-    document.body.appendChild(el)
+    // document.body.appendChild(el)
 
 
     let funcMap = {
@@ -35,11 +42,9 @@ export default class TypePrinter {
 
     this.el = el
 
-    // this.loadingOnce()
-    let stop = this.loadLoop(() => {
-      console.log('load loop end')
-    })
-    window.stop = stop
+    window.start = () => {
+      window.stop = this.loadLoop()
+    }
   }
   _getKeys () {
     return letters.reduce(function (data = '', letter) {
@@ -60,6 +65,7 @@ export default class TypePrinter {
     let flag = true
     let loop = () => {
       if (flag) {
+        this.el.querySelector('.js-content').innerHTML = ''
         return this.loadingOnce(loop)
       }
       return Promise.reject()
@@ -75,18 +81,21 @@ export default class TypePrinter {
   }
   loadingOnce (func = () => {}) {
     let p = Promise.resolve()
+    let contentEl = this.el.querySelector('.js-content')
+    contentEl.innerHTML = ''
     loading.forEach((letter) => {
       p = p.then(() => {
         let e = new Event('keydown')
         e.key = letter
         window.dispatchEvent(e)
+        contentEl.innerHTML = contentEl.innerHTML + letter
         return new Promise((resolve) => {
           setTimeout(function () {
             let e = new Event('keyup')
             e.key = letter
             window.dispatchEvent(e)
-            setTimeout(resolve, 200)
-          }, 200)
+            setTimeout(resolve, 150)
+          }, 100)
         })
       })
     })
