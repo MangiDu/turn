@@ -1,4 +1,5 @@
 import './style/type-printer.css'
+import { throttle } from 'lodash'
 
 const letters = ['q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p', null, 'a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l', null, 'z', 'x', 'c', 'v', 'b', 'n', 'm', '.', null, 'space']
 const loading = 'loading...'.split('')
@@ -24,18 +25,20 @@ export default class TypePrinter {
       keydown: 'add',
       keyup: 'remove'
     }
-    this._keyHandler = (e) => {
+    this._keyHandler = throttle((e) => {
       let key = e.key === ' ' ? 'space' : e.key
       let keyEl = el.querySelector(`[data-keyname="${key}"]`)
       keyEl ? keyEl.classList[funcMap[e.type]]('is-active') : null
-    }
+    }, 10)
     window.addEventListener('keyup', this._keyHandler)
     window.addEventListener('keydown', this._keyHandler)
 
     this.el = el
 
     // this.loadingOnce()
-    let stop = this.loadLoop()
+    let stop = this.loadLoop(() => {
+      console.log('load loop end')
+    })
     window.stop = stop
   }
   _getKeys () {
@@ -52,7 +55,7 @@ export default class TypePrinter {
       return data
     })
   }
-  loadLoop () {
+  loadLoop (callback = () => {}) {
     let p = this.loadingOnce()
     let flag = true
     let loop = () => {
@@ -62,7 +65,9 @@ export default class TypePrinter {
       return Promise.reject()
     }
     p.then(loop).catch((e) => {
-      console.log(e)
+      if (typeof callback === 'function') {
+        callback()
+      }
     })
     return () => {
       flag = false
