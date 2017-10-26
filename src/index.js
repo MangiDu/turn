@@ -52,4 +52,8 @@ import TypePrinter from './typeprinter'
 
 let tp = new TypePrinter()
 
+window.start = () => {
+  window.stop = tp.loadLoop()
+}
+
 document.querySelector('#loading').appendChild(tp.el)

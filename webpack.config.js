@@ -20,9 +20,14 @@ module.exports = {
           { loader: 'postcss-loader'}
         ]
       }, {
-        test: /.js$/,
+        test: /.jsx?$/,
         exclude: /node_modules/,
-        loader: 'babel-loader'
+        use: {
+          loader: 'babel-loader',
+          options: {
+            presets: ['es2015', 'react']
+          }
+        }
       }
     ]
   },

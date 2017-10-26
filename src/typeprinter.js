@@ -41,10 +41,6 @@ export default class TypePrinter {
     window.addEventListener('keydown', this._keyHandler)
 
     this.el = el
-
-    window.start = () => {
-      window.stop = this.loadLoop()
-    }
   }
   _getKeys () {
     return letters.reduce(function (data = '', letter) {
