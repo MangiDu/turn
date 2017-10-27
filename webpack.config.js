@@ -1,13 +1,22 @@
 const path = require('path')
+const webpack = require('webpack')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 
 const dist = path.resolve(__dirname, 'dist')
 
+// TODO: react hot reload
 module.exports = {
-  entry: './src/index.js',
+  entry: [
+    'react-hot-loader/patch',
+    './src/index.js'
+  ],
   output: {
     filename: 'app.js',
-    path: dist
+    path: dist,
+    publicPath: '/'
+  },
+  resolve: {
+    extensions: ['.js', '.jsx', '.css']
   },
   module: {
     rules: [
@@ -25,7 +34,13 @@ module.exports = {
         use: {
           loader: 'babel-loader',
           options: {
-            presets: ['es2015', 'react']
+            presets: [[
+              "env", {
+                "targets": {
+                  "browsers": ["last 2 versions", "safari >= 7"]
+                }
+              }
+            ], 'es2015', 'react']
           }
         }
       }
@@ -34,11 +49,13 @@ module.exports = {
   plugins: [
     new HtmlWebpackPlugin({
       template: 'src/index.html'
-    })
+    }),
+    new webpack.HotModuleReplacementPlugin()
   ],
   devServer: {
     contentBase: dist,
-    port: 8003
+    port: 8003,
+    hot: true
   },
   devtool: 'source-map'
 }

@@ -5,3 +5,19 @@ body {
 #loading {
   text-align: center;
 }
+
+.User {
+  text-align: center;
+  &-avatar {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 2px solid #fff;
+  }
+  &-name {
+    font-size: 18px;
+    line-height: 2em;
+    font-weight: bold;
+  }
+}

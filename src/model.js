@@ -4,14 +4,17 @@ let mid = 0
 const ls = window.localStorage
 class Model {
   constructor (option = {}) {
-    this._option = option
-    this.query = option.query
-    this.onResProcess = option.onResProcess
-    this.useCache = option.useCache || false
+    this.update(option)
     this.data = null
     this.mid = mid++
   }
-  requestData () {
+  update (option = {}) {
+    this.query = option.query
+    this.dealRes = option.dealRes || ((data) => (data))
+    this.useCache = option.useCache || false
+    return this
+  }
+  request () {
     if (this.useCache) {
       let key = `model${this.mid}`
       let lsData = ls.getItem(key)
@@ -31,13 +34,13 @@ class Model {
         query: this.query
       }
     }).then((res) => {
-      this.data = this.onResProcess(res)
+      this.data = this.dealRes(res)
       if (this.useCache) {
         ls.setItem(key, JSON.stringify(this.data))
       }
       return Promise.resolve(this.data)
     }, (err) => {
-      console.log(err)
+      return Promise.reject(err)
     })
   }
   getData() {
