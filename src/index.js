@@ -1,7 +1,10 @@
 import './style/index.css'
 
-import TypePrinter from './typeprinter'
+import React from 'react'
+import ReactDOM from 'react-dom'
+import App from './app'
 
+import TypePrinter from './typeprinter'
 let tp = new TypePrinter()
 
 window.start = () => {
@@ -9,9 +12,7 @@ window.start = () => {
 }
 
 document.querySelector('#loading').appendChild(tp.el)
-import React from 'react'
-import ReactDOM from 'react-dom'
-import App from './app'
+window.start()
 
 let renderFunc = () => {
   ReactDOM.render(

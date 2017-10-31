@@ -19,7 +19,6 @@ const user = new Model({
   }
 })
 
-
 class App extends React.Component {
   constructor (props) {
     super(props)
@@ -30,6 +29,7 @@ class App extends React.Component {
       this.setState({
         user: user.getData()
       })
+      if (window.stop) window.stop()
     })
   }
   componentWillUnmount () {

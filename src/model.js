@@ -28,7 +28,7 @@ class Model {
       url: 'https://api.github.com/graphql',
       method: 'post',
       headers: {
-        Authorization: 'bearer 75bc33e2e5428ef0062474aaff1d759171d08286'
+        Authorization: 'bearer e3ce4f6eac85ff68ac5a02667330ab8abe51722c'
       },
       data: {
         query: this.query
