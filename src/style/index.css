@@ -2,7 +2,7 @@ body {
   background: #efefef;
 }
 
-#loading {
+#loading, .loading {
   text-align: center;
 }
 

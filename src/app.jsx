@@ -1,5 +1,6 @@
 import React from 'react'
 import Posts from './components/posts'
+import TypeWriter from './components/type-writer'
 import Model from './model'
 
 const user = new Model({
@@ -39,6 +40,9 @@ class App extends React.Component {
       <div>
         <User user={this.state.user}></User>
         <Posts></Posts>
+        <div className="loading">
+          <TypeWriter></TypeWriter>
+        </div>
       </div>
     )
   }
