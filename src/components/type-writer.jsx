@@ -28,7 +28,7 @@ class TypeWriter extends React.Component {
     this._paperTimer = setInterval(() => {
       let progress = this.state.progress
       let isHandlerPressed = false
-      if (progress === 99) {
+      if (progress % 20 === 19) {
         isHandlerPressed = true
       }
       if (progress % 2) {
@@ -110,7 +110,7 @@ function Paper (props) {
   let lineCount = Math.ceil(progress / 20)
   let ratio = (progress % 20) * 5
   const style = {
-    'transform': `translateY(${25 - 15 * (lineCount - 4)}px)`
+    'transform': `translate(${60 - 1.4 * ratio}px ,${25 - 15 * (lineCount - 4)}px)`
   }
   let lines = []
   for (let i = 0; i < lineCount; i++) {
