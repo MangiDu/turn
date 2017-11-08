@@ -7,6 +7,7 @@ const letters = ['q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p', null,
                 'z', 'x', 'c', 'v', 'b', 'n', 'm', '.', null,
                 'space']
 const GAP_TIME = 10
+const LOADING_TEXT = 'loading.please wait.'
 class TypeWriter extends React.Component {
   constructor (props) {
     super(props)
@@ -30,6 +31,10 @@ class TypeWriter extends React.Component {
       if (progress === 99) {
         isHandlerPressed = true
       }
+      if (progress % 2) {
+        let index = Math.floor(progress / 2)
+        this.setActiveLetterIndex(this.getKeyIndex(LOADING_TEXT[index % 20]))
+      }
 
       progress = (progress + 1) % 100
       this.setState({
@@ -41,6 +46,7 @@ class TypeWriter extends React.Component {
   componentWillUnmount () {
     window.removeEventListener('keydown', this._throttledKeyHandler)
     window.removeEventListener('keyup', this._throttledKeyHandler)
+    clearInterval(this._paperTimer)
   }
   setActiveLetterIndex (index) {
     this.setState({
