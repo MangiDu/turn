@@ -43,7 +43,10 @@ $keyBorder: #efefef;
     height: 10px;
     background-color: #000;
     border-radius: 50%;
-    z-index: 1;
+    transition: all ease .2s;
+    &.pressed {
+      transform: rotate(-40deg);
+    }
     &::after {
       content: '';
       position: absolute;
@@ -64,8 +67,10 @@ $keyBorder: #efefef;
     padding: 10px;
     background-color: #fff;
     text-align: left;
+    word-break: break-all;
     box-sizing: border-box;
-    transform: translateY(60%);
+    // transform: translateY(60%);
+    transition: all ease .1s;
     p {
       margin: 0;
     }
@@ -157,5 +162,11 @@ $keyBorder: #efefef;
       content: attr(data-keyname);
       color: $keyLetter;
     }
+  }
+  &-text {
+    height: 10px;
+    background-color: #eee;
+    border-radius: 5px;
+    margin-bottom: 5px;
   }
 }

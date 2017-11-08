@@ -12,7 +12,9 @@ class TypeWriter extends React.Component {
     super(props)
     this.state = {
       letters,
-      activeLetterIndex: -1
+      activeLetterIndex: -1,
+      progress: 0,
+      isHandlerPressed: false
     }
     this.setActiveLetterIndex = this.setActiveLetterIndex.bind(this)
     this.getKeyIndex = this.getKeyIndex.bind(this)
@@ -22,9 +24,23 @@ class TypeWriter extends React.Component {
     this._throttledKeyHandler = throttle(this.keyHandler, GAP_TIME)
     window.addEventListener('keydown', this._throttledKeyHandler)
     window.addEventListener('keyup', this._throttledKeyHandler)
+    this._paperTimer = setInterval(() => {
+      let progress = this.state.progress
+      let isHandlerPressed = false
+      if (progress === 99) {
+        isHandlerPressed = true
+      }
+
+      progress = (progress + 1) % 100
+      this.setState({
+        progress,
+        isHandlerPressed
+      })
+    }, 100)
   }
   componentWillUnmount () {
-
+    window.removeEventListener('keydown', this._throttledKeyHandler)
+    window.removeEventListener('keyup', this._throttledKeyHandler)
   }
   setActiveLetterIndex (index) {
     this.setState({
@@ -51,10 +67,8 @@ class TypeWriter extends React.Component {
     return (
       <div className="TypePrinter">
         <div className="TypePrinter-paperSlot">
-          <div className="TypePrinter-paper">
-            <p>loading...</p>
-          </div>
-          <div className="TypePrinter-handler"></div>
+          <div className={`TypePrinter-handler ${this.state.isHandlerPressed ? 'pressed' : ''}`}></div>
+          <Paper progress={this.state.progress}></Paper>
         </div>
         <div className="TypePrinter-body">
           <div className="TypePrinter-rod"></div>
@@ -67,7 +81,6 @@ class TypeWriter extends React.Component {
             {
               letters.map((letter, index) => {
                 if (letter !== null) {
-                  // return <span key={index} className={`TypePrinter-key ${activeIndex === index ? 'is-active' : ''}`} data-keyname={letter} onMouseDown={e => setIndexFunc(index)} onMouseUp={() => setIndexFunc(-1)}></span>
                   return <Key key={index} letter={letter} isActive={activeIndex === index}></Key>
                 }
                 return <br key={index}/>
@@ -83,6 +96,29 @@ class TypeWriter extends React.Component {
 function Key (props) {
   return (
     <span className={`TypePrinter-key ${props.isActive ? 'is-active' : ''}`} data-keyname={props.letter}></span>
+  )
+}
+
+function Paper (props) {
+  let progress = Math.min(Math.max(props.progress, 0), 100)
+  let lineCount = Math.ceil(progress / 20)
+  let ratio = (progress % 20) * 5
+  const style = {
+    'transform': `translateY(${25 - 15 * (lineCount - 4)}px)`
+  }
+  let lines = []
+  for (let i = 0; i < lineCount; i++) {
+    if (i === lineCount - 1) {
+      lines.push(<div key={i} className="TypePrinter-text" style={{width: `${ratio ? ratio : 100}%`}}></div>)
+    }
+    else {
+      lines.push(<div key={i} className="TypePrinter-text"></div>)
+    }
+  }
+  return (
+    <div className="TypePrinter-paper" style={style}>
+      {lines}
+    </div>
   )
 }
 
