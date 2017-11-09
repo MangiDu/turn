@@ -24,6 +24,7 @@ class App extends React.Component {
   }
   componentDidMount () {
     user.request().then((data) => {
+      document.title = data.name
       this.setState({
         user: user.getData()
       })
