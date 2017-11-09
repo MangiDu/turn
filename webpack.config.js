@@ -22,7 +22,6 @@ module.exports = {
     rules: [
       {
         test: /.css$/,
-        exclude: /node_modules/,
         use: [
           { loader: 'style-loader'},
           { loader: 'css-loader', options: { importLoaders: 1} },
@@ -43,6 +42,9 @@ module.exports = {
             ], 'es2015', 'react']
           }
         }
+      }, {
+        test: /\.(png|woff|woff2|eot|ttf|svg)$/,
+        loader: 'url-loader?limit=100000'
       }
     ]
   },

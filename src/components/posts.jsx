@@ -14,6 +14,7 @@ const repository = new Model({
           node {
             number
             title
+            bodyHTML
             publishedAt
             url
             labels(first: 3) {
@@ -46,7 +47,6 @@ class Posts extends React.Component {
       this.setState({
         posts: data.issues.edges
       })
-      console.log(this.state.posts)
     })
   }
   render () {
@@ -61,27 +61,64 @@ class Posts extends React.Component {
   }
 }
 
-function Post ({data}) {
-  let labels = data.labels.edges.map(({node}, index) => {
-    let color = `#${node.color}`
+class Post extends React.Component {
+  constructor (props) {
+    super(props)
+
+    let number = props.data.number
+    this.state = {
+      number,
+      post: props.data,
+      showContent: false
+    }
+  }
+  toggleContent (isShowContent = !this.state.showContent) {
+    this.setState({
+      showContent: isShowContent
+    })
+  }
+  render () {
+    let data = this.state.post
+    let labels = data.labels.edges.map(({ node }, index) => {
+      let color = `#${node.color}`
+      return (
+        <li className="Posts-label" key={index}>
+          <a href={`https://github.com/MangiDu/blog/labels/${node.name}`} target="_blank" style={{ color }}>
+            <Label color={color}></Label>
+            <span>{node.name}</span>
+          </a>
+        </li>
+      )
+    })
+
+    let content = null
+    if (this.state.showContent) {
+      content = (
+        <div>
+          <div className="markdown-body" dangerouslySetInnerHTML={{ __html: data.bodyHTML }}></div>
+          <div className="Posts-itemOperations">
+            <a href="javascript:;" onClick={() => toggleContent(false)}>收起</a>
+            <a className="Posts-itemRealUrl" href={data.url} target="_blank">原文地址</a>
+          </div>
+        </div>
+      )
+    }
+
+    let toggleContent = this.toggleContent.bind(this)
     return (
-      <li className="Posts-label" key={index}>
-        <a href={`https://github.com/MangiDu/blog/labels/${node.name}`} target="_blank" style={{ color }}>
-          <Label color={color}></Label>
-          <span>{node.name}</span>
-        </a>
+      <li className={`Posts-item ${this.state.showContent ? 'Posts-item--expanded' : ''}`}>
+        <div className="Posts-itemHead">
+          <a className="Posts-itemTitle" href="javascript:;" onClick={() => toggleContent()} title={data.title}>{data.title}</a>
+          <ul className="Posts-labelList">
+            {labels}
+          </ul>
+          <div className="Posts-itemDate">{new Date(data.publishedAt).toLocaleDateString()}</div>
+        </div>
+        {/* <a className="Posts-itemTitle" href={data.url} target="_blank" title={data.title}>{data.title}</a> */}
+        {content}
       </li>
     )
-  })
-  return (
-    <li className="Posts-item">
-      <a className="Posts-itemTitle" href={data.url} target="_blank" title={data.title}>{data.title}</a>
-      <ul className="Posts-labelList">
-        {labels}
-      </ul>
-      <div className="Posts-itemDate">{new Date(data.publishedAt).toLocaleDateString()}</div>
-    </li>
-  )
+  }
 }
 
 function Label (props) {

@@ -23,7 +23,7 @@ body {
 }
 
 .Posts {
-  text-align: center;
+  // text-align: center;
   list-style: none;
   padding: 0;
   &-item {
@@ -36,8 +36,30 @@ body {
     border: 1px solid #eee;
     border-radius: 4px;
     box-shadow: 0 0 4px rgba(0,0,0,.1);
+    transition: all ease .1s;
     &:hover {
       box-shadow: 0 0 8px rgba(0,0,0,.2);
+    }
+    &--expanded {
+      width: 600px;
+      margin-bottom: 20px;
+      box-shadow: 0 0 8px rgba(0,0,0,.1);
+      &:hover {
+        box-shadow: 0 0 12px rgba(0,0,0,.2);
+      }
+    }
+    & + &--expanded {
+      margin-top: 20px;
+    }
+    .markdown-body {
+      margin: 20px 10px;
+      & + div {
+        padding: 0 10px;
+        text-align: right;
+        a {
+          font-size: 14px;
+        }
+      }
     }
   }
   &-itemTitle {
@@ -66,6 +88,9 @@ body {
         transform: rotate(-20deg);
       }
     }
+  }
+  &-itemHead {
+    text-align: center;
   }
   &-itemDate {
     margin-top: 20px;
@@ -97,6 +122,19 @@ body {
     }
     & + & {
       margin-left: 10px;
+    }
+  }
+  &-itemOperations {
+    a {
+      font-size: 12px;
+      text-decoration: none;
+      color: #666;
+      &:hover {
+        color: #888;
+      }
+      & + a {
+        margin-left: 10px;
+      }
     }
   }
 }
