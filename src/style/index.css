@@ -26,4 +26,109 @@ body {
   text-align: center;
   list-style: none;
   padding: 0;
+  &-item {
+    position: relative;
+    width: 400px;
+    min-height: 60px;
+    margin: 0 auto 10px;
+    padding: 20px 10px;
+    background-color: #fff;
+    border: 1px solid #eee;
+    border-radius: 4px;
+    box-shadow: 0 0 4px rgba(0,0,0,.1);
+    &:hover {
+      box-shadow: 0 0 8px rgba(0,0,0,.2);
+    }
+  }
+  &-itemTitle {
+    display: block;
+    max-width: 100%;
+    text-decoration: none;
+    color: #666;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-size: 16px;
+    &:hover {
+      color: #888;
+    }
+    &--visited {
+      &::after {
+        content: 'visited';
+        display: inline-block;
+        position: absolute;
+        right: 10px;
+        bottom: 15px;
+        padding: 0 4px;
+        border-radius: 4px;
+        border: 2px solid #bc6363;
+        color: #bc6363;
+        transform: rotate(-20deg);
+      }
+    }
+  }
+  &-itemDate {
+    margin-top: 20px;
+    font-size: 12px;
+    color: #999;
+  }
+  &-labelList {
+    list-style: none;
+    padding: 0;
+  }
+  &-label {
+    display: inline-block;
+    font-size: 14px;
+    opacity: .6;
+    cursor: pointer;
+    a {
+      text-decoration: none;
+    }
+    &:hover {
+      a {
+        color: #999 !important;
+      }
+      .Label {
+        background-color: #999 !important;
+        &-tip {
+          border-bottom-color: #999 !important;
+        }
+      }
+    }
+    & + & {
+      margin-left: 10px;
+    }
+  }
+}
+
+.Label {
+  position: relative;
+  display: inline-block;
+  background-color: #eee;
+  width: 8px;
+  height: 10px;
+  margin-right: 5px;
+  border-bottom-left-radius: 2px;
+  border-bottom-right-radius: 2px;
+  transform: rotate(30deg);
+  &-tip {
+    display: block;
+    position: relative;
+    top: -3px;
+    border-style: solid;
+    border-width: 0 4px 3px 4px;
+    border-color: transparent;
+    border-bottom-color: #eee;
+  }
+  &::after {
+    content: '';
+    display: block;
+    position: absolute;
+    top: -1px;
+    left: 3px;
+    width: 2px;
+    height: 2px;
+    border-radius: 50%;
+    background-color: #fff;
+  }
 }

@@ -4,7 +4,7 @@ import Model from '../model'
 const repository = new Model({
   query: `{
     repository(owner: "MangiDu", name: "blog") {
-      issues(first: 2, states: OPEN, orderBy: {field: CREATED_AT, direction: DESC}) {
+      issues(first: 5, states: OPEN, orderBy: {field: CREATED_AT, direction: DESC}) {
         totalCount
         pageInfo {
           hasNextPage
@@ -14,6 +14,16 @@ const repository = new Model({
           node {
             number
             title
+            publishedAt
+            url
+            labels(first: 3) {
+              edges {
+                node {
+                  name
+                  color
+                }
+              }
+            }
           }
         }
       }
@@ -52,10 +62,33 @@ class Posts extends React.Component {
 }
 
 function Post ({data}) {
+  let labels = data.labels.edges.map(({node}, index) => {
+    let color = `#${node.color}`
+    return (
+      <li className="Posts-label" key={index}>
+        <a href={`https://github.com/MangiDu/blog/labels/${node.name}`} target="_blank" style={{ color }}>
+          <Label color={color}></Label>
+          <span>{node.name}</span>
+        </a>
+      </li>
+    )
+  })
   return (
     <li className="Posts-item">
-      <a href={`https://github.com/MangiDu/blog/issues/${data.number}`} target="_blank">{data.title}</a>
+      <a className="Posts-itemTitle" href={data.url} target="_blank" title={data.title}>{data.title}</a>
+      <ul className="Posts-labelList">
+        {labels}
+      </ul>
+      <div className="Posts-itemDate">{new Date(data.publishedAt).toLocaleDateString()}</div>
     </li>
+  )
+}
+
+function Label (props) {
+  return (
+    <div className="Label" style={{ backgroundColor: props.color }}>
+      <span className="Label-tip" style={{borderBottomColor: props.color}}></span>
+    </div>
   )
 }
 

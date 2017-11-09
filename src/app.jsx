@@ -8,11 +8,8 @@ const user = new Model({
     user(login: "MangiDu") {
       name
       avatarUrl
-      email
-      websiteUrl
       url
       bio
-      login
     }
   }`,
   dealRes ({data}) {
