@@ -1,4 +1,5 @@
 import axios from 'axios'
+import common from './common'
 
 let mid = 0
 const ls = window.localStorage
@@ -28,7 +29,7 @@ class Model {
       url: 'https://api.github.com/graphql',
       method: 'post',
       headers: {
-        Authorization: 'bearer f6b765678360e29d2a50757cbd973790286b19bc'
+        Authorization: `bearer ${common.token}`
       },
       data: {
         query: this.query
