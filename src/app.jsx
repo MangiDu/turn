@@ -24,7 +24,14 @@ class App extends React.Component {
   }
   componentDidMount () {
     user.request().then((data) => {
+
       document.title = data.name
+      let faviconEl = document.createElement('link')
+      faviconEl.rel = 'shortcut icon'
+      faviconEl.type = 'image/x-icon'
+      faviconEl.href = data.avatarUrl
+      document.head.appendChild(faviconEl)
+
       this.setState({
         user: user.getData()
       })
