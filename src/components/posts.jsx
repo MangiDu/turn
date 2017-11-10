@@ -73,6 +73,9 @@ class Post extends React.Component {
     }
   }
   toggleContent (isShowContent = !this.state.showContent) {
+    if (!isShowContent && (this.el.getBoundingClientRect().top < 0)) {
+      window.scroll(0, this.el.offsetTop)
+    }
     this.setState({
       showContent: isShowContent
     })
@@ -106,7 +109,7 @@ class Post extends React.Component {
 
     let toggleContent = this.toggleContent.bind(this)
     return (
-      <li className={`Posts-item ${this.state.showContent ? 'Posts-item--expanded' : ''}`}>
+      <li ref={el => this.el = el} className={`Posts-item ${this.state.showContent ? 'Posts-item--expanded' : ''}`}>
         <div className="Posts-itemHead">
           <a className="Posts-itemTitle" href="javascript:;" onClick={() => toggleContent()} title={data.title}>{data.title}</a>
           <ul className="Posts-labelList">

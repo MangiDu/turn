@@ -29,6 +29,7 @@ body {
   &-item {
     position: relative;
     width: 400px;
+    max-width: 100%;
     min-height: 60px;
     margin: 0 auto 10px;
     padding: 20px 10px;
@@ -36,12 +37,14 @@ body {
     border: 1px solid #eee;
     border-radius: 4px;
     box-shadow: 0 0 4px rgba(0,0,0,.1);
+    box-sizing: border-box;
     transition: all ease .1s;
     &:hover {
       box-shadow: 0 0 8px rgba(0,0,0,.2);
     }
     &--expanded {
       width: 600px;
+      max-width: 100%;
       margin-bottom: 20px;
       box-shadow: 0 0 8px rgba(0,0,0,.1);
       &:hover {
