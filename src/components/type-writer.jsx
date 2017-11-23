@@ -25,6 +25,15 @@ class TypeWriter extends React.Component {
     this._throttledKeyHandler = throttle(this.keyHandler, GAP_TIME)
     window.addEventListener('keydown', this._throttledKeyHandler)
     window.addEventListener('keyup', this._throttledKeyHandler)
+    this.setTypeTimer()
+  }
+  componentWillUnmount () {
+    window.removeEventListener('keydown', this._throttledKeyHandler)
+    window.removeEventListener('keyup', this._throttledKeyHandler)
+    clearInterval(this._paperTimer)
+  }
+  setTypeTimer () {
+    clearInterval(this._paperTimer)
     this._paperTimer = setInterval(() => {
       let progress = this.state.progress
       let isHandlerPressed = false
@@ -42,11 +51,6 @@ class TypeWriter extends React.Component {
         isHandlerPressed
       })
     }, 100)
-  }
-  componentWillUnmount () {
-    window.removeEventListener('keydown', this._throttledKeyHandler)
-    window.removeEventListener('keyup', this._throttledKeyHandler)
-    clearInterval(this._paperTimer)
   }
   setActiveLetterIndex (index) {
     this.setState({
